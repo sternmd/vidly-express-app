@@ -16,10 +16,15 @@ app.get('/api/genres', (req, res) => {
   res.send(genres)
 });
 
+app.get('/api/genres/:id', (req, res) => {
+  const genre = genres.find(c => c.id === parseInt(req.params.id));
+  if (!genre) return res.status(400).send('Genre not found.');
+  res.send(genre);
+});
+
 // POST
 app.post('/api/genres', (req, res) => {
   const { error } = validate(req.body);
-
   if (error) return res.status(400).send(error.details[0].message);
 
   const genre = {
@@ -28,7 +33,18 @@ app.post('/api/genres', (req, res) => {
   }
   genres.push(genre);
   res.send(genre);
+});
 
+// PUT
+app.put('/api/genres/:id', (req, res) => {
+  const genre = genres.find(c => c.id === parseInt(req.params.id));
+  if (!genre) return res.status(400).send('Genre not found.');
+
+  const { error } = validate(req.body);
+  if (error) return res.status(400).send(error.details[0].message);
+
+  genre.name = req.body.name;
+  res.send(genre);
 });
 
 function validateGenre(genre) {
