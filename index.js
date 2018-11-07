@@ -59,7 +59,7 @@ app.delete('/api/genres/:id', (req, res) => {
 
 function validateGenre(genre) {
   const schema = {
-    name: Joi.string().min(3).require()
+    name: Joi.string().min(3).required()
   };
 
   return Joi.validate(genre, schema);
